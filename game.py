@@ -18,9 +18,6 @@ offset_map: float = renderer.offset_map
 player_p_x, player_p_y = 0.0, 0.0
 reset_player: bool = False
 
-blue_ball_size = yellow_ball_size = green_ball_size = red_ball_size = gv.ball_size
-blue_ball_value = yellow_ball_value = green_ball_value = red_ball_value = gv.ball_value
-
 # Timer Variables
 timer_temp: float = 0.0
 timer: float = 0.0
@@ -97,7 +94,7 @@ def simulate_game(events, dt: float):
         reset_player = False
     
     if player == None:
-        player_p_x, player_p_y = gv.map_width / 2 + offset_map, gv.map_height / 2 + offset_map
+        player_p_x, player_p_y = (gv.map_width - gv.player_size) * .5 + offset_map, (gv.map_height - gv.player_size) * .5 + offset_map
         player = Player(player_p_x, player_p_y, gv.player_size)
         instance_player = False
     
