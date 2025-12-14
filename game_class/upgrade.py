@@ -25,21 +25,23 @@ class Upgrade:
         self.remaining_level = self.max_level
     
     def upgrade(self):
-        if self.remaining_level > 0 :
-            self.remaining_level -= 1
-        else: return
-        
+        if self.remaining_level <= 0 or gv.points < self.cost:
+            return
+        self.remaining_level -= 1
+        gv.points -= self.cost
+        self.cost *= 1.2
+
         match self.type:
             case Upgrade_Type.BALL_SIZE:
-                gv.ball_size += self.value
-                gv.blue_ball_size = gv.yellow_ball_size = gv.green_ball_size = gv.red_ball_size = gv.ball_size
+                gv.ball_size *= 1 + (self.value / 100.0)
+                gv.init_ball_sizes()
             case Upgrade_Type.BALL_VALUE:
                 gv.ball_value += self.value
-                gv.blue_ball_value = gv.yellow_ball_value = gv.green_ball_value = gv.red_ball_value = gv.ball_value
+                gv.init_ball_values()
             case Upgrade_Type.BALL_ON_SCREEN:
                 gv.max_balls_on_screen += self.value
             case Upgrade_Type.PLAYER_SIZE:
-                gv.player_size += self.value
+                gv.player_size *= 1 + (self.value / 100.0)
             case Upgrade_Type.PLAYER_SPEED:
                 gv.player_max_speed += self.value
             case Upgrade_Type.TIME:

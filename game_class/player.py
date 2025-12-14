@@ -59,21 +59,22 @@ class Player:
         self.p_x += self.dp_x * dt
         self.p_y += self.dp_y * dt
 
-        current_offset = renderer.offset_map
+        current_offset_width = gv.offset_map_width
+        current_offset_height = gv.offset_map_height
         current_width = gv.map_width
         current_height = gv.map_height
 
         # collisions with map bounds
-        if (self.p_x < current_offset):
-            self.p_x = current_offset
+        if (self.p_x < current_offset_width):
+            self.p_x = current_offset_width
             self.dp_x = 0.0
-        if (self.p_x + self.size > current_width + current_offset):
-            self.p_x = current_width + current_offset - self.size
+        if (self.p_x + self.size > current_width + current_offset_width):
+            self.p_x = current_width + current_offset_width - self.size
             self.dp_x = 0.0
 
-        if (self.p_y < current_offset):
-            self.p_y = current_offset
+        if (self.p_y < current_offset_height):
+            self.p_y = current_offset_height
             self.dp_y = 0.0
-        if (self.p_y + self.size > current_height + current_offset):
-            self.p_y = current_height + current_offset - self.size
+        if (self.p_y + self.size > current_height + current_offset_height):
+            self.p_y = current_height + current_offset_height - self.size
             self.dp_y = 0.0

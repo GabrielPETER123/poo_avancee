@@ -4,10 +4,9 @@
 WHITE: int = 0xFFFFFF
 RED: int = 0xFF0000
 BLUE: int = 0x0000FF
+LIGHT_BLUE: int = 0x28c7bc
 GREEN: int = 0x00FF00
 YELLOW: int = 0xFFFF00
 GRAY: int = 0x808080
 DARK_GRAY: int = 0x222222
 LIGHT_GRAY: int = 0xD3D3D3
-
-UPGRADE_SIZE: float = 150.0

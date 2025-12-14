@@ -13,10 +13,7 @@ class Ball:
         self.value = value
         
     def add_point(self):
-        try:
-            gv.points += self.value
-        except Exception:
-            return
+        gv.points += self.value
         
 class Blue_Ball(Ball):
     color: int = BLUE

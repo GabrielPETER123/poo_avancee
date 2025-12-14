@@ -6,39 +6,47 @@ from game_class.upgrade import Upgrade, Upgrade_Type
 
 #** Global Variables
 game_screen = None
-screen_width: int = 0
-screen_height: int = 0
-half_size_screen_width: int = 0
-half_size_screen_height: int = 0
-offset_map: float = 50.0
+half_size_screen_width: float = .0
+half_size_screen_height: float = .0
 font = None 
 
 
 def init_renderer(size=None, fullscreen=False):
-    global game_screen, screen_width, screen_height, half_size_screen_width, half_size_screen_height, offset_map, font
-    # Ensure the display module is initialized before querying or using mouse/display APIs.
+    global game_screen, half_size_screen_width, half_size_screen_height, font
     if not pg.display.get_init():
         pg.display.init()
     if not pg.font.get_init():
         pg.font.init()
         font = pg.font.Font(pg.font.get_default_font(), 36)
-    
-    
 
     if size is None:
         info = pg.display.Info()
-        screen_width, screen_height = info.current_w, info.current_h
-        half_size_screen_width, half_size_screen_height = screen_width // 2, screen_height // 2
-        gv.map_width = (screen_width - offset_map * 2) * 0.8
-        gv.map_height = screen_height - offset_map * 2
+        gv.screen_width, gv.screen_height = info.current_w, info.current_h
     else:
-        screen_width, screen_height = size
+        gv.screen_width, gv.screen_height = size
+
+    gv.offset_map_width, gv.offset_map_height = gv.screen_width * .1, gv.screen_height * .1
+    half_size_screen_width, half_size_screen_height = gv.screen_width // 2, gv.screen_height // 2
+    gv.map_width = (gv.screen_width - gv.offset_map_width * 2) * .8
+    gv.map_height = gv.screen_height - gv.offset_map_height * 2
+
+    gv.player_size = gv.screen_width * .05
+    gv.ball_size = gv.screen_width * .01
+    gv.init_ball_sizes()
+    gv.init_ball_values()
+
+    gv.button_offset = gv.screen_height * .05
+    gv.button_width = gv.screen_width * .1
+    gv.button_height = gv.screen_height * .07
+
+    gv.upgrade_size = gv.screen_height * .125
+    gv.upgrade_button_offset = gv.screen_width * .01
 
     flags = 0
     if fullscreen:
         flags = pg.FULLSCREEN
 
-    game_screen = pg.display.set_mode((screen_width, screen_height), flags)
+    game_screen = pg.display.set_mode((gv.screen_width, gv.screen_height), flags)
     pg.display.set_caption("INCREMENTAL GAME")
 
 def clear_screen(color=0x444a46):
@@ -82,7 +90,7 @@ def draw_text(text: str, color: tuple, p_x, p_y, line_height: int | None = None)
     if font is None:
         if not pg.font.get_init():
             pg.font.init()
-        font = pg.font.Font(pg.font.get_default_font(), 36)
+        font = pg.font.Font(pg.font.get_default_font(), 30)
     if isinstance(color, int):
         color = ((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF)
 
@@ -95,32 +103,31 @@ def draw_text(text: str, color: tuple, p_x, p_y, line_height: int | None = None)
 
 
 def draw_uprgrade_menu():
-    global game_screen, screen_width, screen_height
+    global game_screen
     
-    game_screen.fill(DARK_GRAY, pg.Rect(screen_width * 2 / 3, 0.0, screen_width, screen_width))
+    game_screen.fill(DARK_GRAY, pg.Rect(gv.screen_width * 2 / 3, 0.0, gv.screen_width, gv.screen_width))
     text = f"Points: {gv.points:.2f}"
-    draw_text(text, BLUE, screen_width *2 / 3, screen_height / 2)
+    draw_text(text, BLUE, gv.screen_width *2 / 3, gv.screen_height / 2)
     
 def draw_upgrade_description(upgrade: Upgrade):
     description: str = ""
     match upgrade.type:
         case Upgrade_Type.PLAYER_SIZE:
-            description = "Increase Player Size by 10px"
+            description = "Increase Player Size by 10%"
         case Upgrade_Type.PLAYER_SPEED:
             description = "Increase Player Max Acceleration \nby 150"
         case Upgrade_Type.BALL_ON_SCREEN:
             description = "Increase the number of ball \nthat can spawn by 1"
         case Upgrade_Type.BALL_SIZE:
-            description = "Increase Ball Size by 10px"
+            description = "Increase Ball Size by 10%"
         case Upgrade_Type.BALL_VALUE:
             description = "Rise the value of balls by 10 points"
         case Upgrade_Type.TIME:
             description = "Increase the time you can play\nby 2s"
-    draw_text(description, WHITE, screen_width * 2 / 3, 0.0)
-    draw_text(f"Level {upgrade.max_level - upgrade.remaining_level} / {upgrade.max_level}", WHITE, screen_width * 2 / 3, screen_height / 3)
+    draw_text(description, WHITE, gv.screen_width * 2 / 3, 0.0)
+    draw_text(f"Level {upgrade.max_level - upgrade.remaining_level} / {upgrade.max_level}", WHITE, gv.screen_width * 2 / 3, gv.screen_height / 3)
 
 def draw_map(id: int):
-    global offset_map
     if game_screen is None:
         raise RuntimeError("renderer.init_renderer() must be called before drawing")
 
@@ -129,7 +136,7 @@ def draw_map(id: int):
             rects = [ 
                 {
                     'color': 0x444455,
-                    'rect': pg.Rect(offset_map, offset_map, gv.map_width, gv.map_height)
+                    'rect': pg.Rect(gv.offset_map_width, gv.offset_map_height, gv.map_width, gv.map_height)
                 }
             ]
             for rect in rects:

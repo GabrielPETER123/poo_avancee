@@ -11,7 +11,6 @@ import math
 # ------------------------------------------------------------------
 # Map properties
 map = 0
-offset_map: float = renderer.offset_map
 
 # Player Properties
 player_p_x, player_p_y = 0.0, 0.0
@@ -28,14 +27,13 @@ from game_class.ball import Ball, Blue_Ball, Yellow_Ball, Green_Ball, Red_Ball
 player: Player = None 
 ball_list: list[Ball] = []
 
-
 def manage_ball_list():
     global ball_list
     # TODO: Mettre seulement des balles disponibles
     if (len(ball_list) < gv.max_balls_on_screen):
         for _ in range(gv.max_balls_on_screen - len(ball_list)):
-            x = random.uniform(offset_map, max(offset_map, gv.map_width + offset_map - gv.ball_size))
-            y = random.uniform(offset_map, max(offset_map, gv.map_height + offset_map - gv.ball_size))
+            x = random.uniform(gv.offset_map_width, max(gv.offset_map_width, gv.map_width + gv.offset_map_width - gv.ball_size))
+            y = random.uniform(gv.offset_map_height, max(gv.offset_map_height, gv.map_height + gv.offset_map_height - gv.ball_size))
             
             ball_type = random.randint(0,3)
             if ball_type == 0:
@@ -80,14 +78,14 @@ def reset_game():
     timer = 0.0  
     
 def simulate_game(events, dt: float):
-    global player, timer, instance_player, player_p_x, player_p_y, reset_player, reseting_game
+    global player, timer, instance_player, player_p_x, player_p_y, reset_player
 
     if reset_player:
         player = None
         reset_player = False
     
     if player == None:
-        player_p_x, player_p_y = (gv.map_width - gv.player_size) * .5 + offset_map, (gv.map_height - gv.player_size) * .5 + offset_map
+        player_p_x, player_p_y = (gv.map_width - gv.player_size) * .5 + gv.offset_map_width, (gv.map_height - gv.player_size) * .5 + gv.offset_map_height
         player = Player(player_p_x, player_p_y, gv.player_size)
         instance_player = False
          
@@ -148,7 +146,7 @@ def draw_options_menu(events):
     ui.draw_options_menu_widgets(events)
 
 def draw_gameplay(events):
-    global player, timer, round_time
+    global player, timer
     p_x = 0.0
     p_y = 0.0
     text = ""
@@ -158,8 +156,8 @@ def draw_gameplay(events):
     renderer.draw_player(player.p_x, player.p_y, player.size)
     
     # Draw Time Left
-    p_x = renderer.screen_width - gv.map_width * 0.2
-    p_y = renderer.screen_height * 0.1
+    p_x = gv.map_width + gv.offset_map_width
+    p_y = gv.screen_height * 0.1
     if (gv.round_time - timer > 0.0):
         text = "Time Left: " + str(math.ceil(gv.round_time - timer)) + "s"
     else:
@@ -168,8 +166,7 @@ def draw_gameplay(events):
     renderer.draw_text(text, WHITE, p_x, p_y)
     
     # Draw Player Score
-    p_x = renderer.screen_width - gv.map_width * 0.2
-    p_y = renderer.screen_height * 0.2
+    p_y = gv.screen_height * 0.2
     text = f"Points: {gv.points:.2f}"
     renderer.draw_text(text, WHITE, p_x, p_y)
     
