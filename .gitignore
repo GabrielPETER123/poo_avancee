@@ -8,6 +8,9 @@ venv/
 ENV/
 env/
 
+# Save Files
+/save_files
+
 # Distribution / packaging
 build/
 dist/

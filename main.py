@@ -6,11 +6,14 @@ from renderer import init_renderer
 import global_variable as gv
 import game
 import ui
+import utils
 
 def main():
     #** Create Window
     pg.init()
     init_renderer()
+
+    utils.load_game()
     
     clock = pg.time.Clock()
     delta_time: float = 0.0166667
@@ -55,6 +58,7 @@ def main():
         # Cap Framerate of needed
         clock.tick()
     
+    utils.save_game()
     pg.quit()
 
 if __name__ == '__main__':

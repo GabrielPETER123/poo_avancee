@@ -35,15 +35,12 @@ ball_value: float = 10.0
 blue_ball_size = yellow_ball_size = green_ball_size = red_ball_size = ball_size
 blue_ball_value = yellow_ball_value = green_ball_value = red_ball_value = ball_value
 
-
 # Upgrade Button Properties
 upgrade_button_offset: float = 50.0
 upgrade_selected: Upgrade = None
 
 # Buy Button
 buy_button: Button = None
-
-
 
 def change_gamemode(futur_gamemode: Gamemode):
     global past_gamemode, current_gamemode
@@ -59,4 +56,7 @@ def buy_upgrade():
         points -= upgrade_selected.cost
         upgrade_selected.cost *= 1.2
         upgrade_selected.upgrade()
-        
+
+def reset_upgrade_selected():
+    global upgrade_selected
+    upgrade_selected = None

@@ -1,6 +1,5 @@
 # renderer.py
 import pygame as pg
-from utils import *
 import global_variable as gv
 from const import *
 from game_class.upgrade import Upgrade, Upgrade_Type
@@ -117,8 +116,8 @@ def draw_upgrade_description(upgrade: Upgrade):
             description = "Rise the value of balls by 10 points"
         case Upgrade_Type.TIME:
             description = "Increase the time you can play\nby 2s"
-            
     draw_text(description, WHITE, screen_width * 2 / 3, 0.0)
+    draw_text(f"Level {upgrade.max_level - upgrade.remaining_level} / {upgrade.max_level}", WHITE, screen_width * 2 / 3, screen_height / 3)
 
 def draw_map(id: int):
     global offset_map

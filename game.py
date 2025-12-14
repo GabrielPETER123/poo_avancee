@@ -11,7 +11,6 @@ import math
 # ------------------------------------------------------------------
 # Map properties
 map = 0
-
 offset_map: float = renderer.offset_map
 
 # Player Properties
@@ -29,20 +28,7 @@ from game_class.ball import Ball, Blue_Ball, Yellow_Ball, Green_Ball, Red_Ball
 player: Player = None 
 ball_list: list[Ball] = []
 
-def reset_game():
-    global timer, timer_temp, ball_list, player
-    player = None
-    ball_list = []
-    timer_temp = 0.0
-    timer = 0.0
 
-def reset_upgrade_selected():
-    gv.upgrade_selected = None
-    if gv.buy_button is not None:
-        gv.buy_button.hide()
-        gv.buy_button.disable()
-    
-    
 def manage_ball_list():
     global ball_list
     # TODO: Mettre seulement des balles disponibles
@@ -85,9 +71,16 @@ def simulate_balls(player: Player):
         if (player.aabb_vs_aabb(ball.p_x, ball.p_y, ball.size)):
             ball.add_point()
             ball_list.remove(ball)
-            
+                   
+def reset_game():
+    global timer, timer_temp, ball_list, player
+    player = None
+    ball_list = []
+    timer_temp = 0.0
+    timer = 0.0  
+    
 def simulate_game(events, dt: float):
-    global player, timer, instance_player, player_p_x, player_p_y, reset_player
+    global player, timer, instance_player, player_p_x, player_p_y, reset_player, reseting_game
 
     if reset_player:
         player = None
@@ -97,14 +90,12 @@ def simulate_game(events, dt: float):
         player_p_x, player_p_y = (gv.map_width - gv.player_size) * .5 + offset_map, (gv.map_height - gv.player_size) * .5 + offset_map
         player = Player(player_p_x, player_p_y, gv.player_size)
         instance_player = False
-    
+         
     match gv.current_gamemode:
         case gv.Gamemode.GM_MENU:
+            reset_game()
             draw_main_menu(events)
         case gv.Gamemode.GM_GAMEPLAY:
-            if gv.past_gamemode == gv.Gamemode.GM_UPGRADE_MENU:
-                reset_upgrade_selected()            
-                
             # keep iterating events so other systems can react
             for event in events:
                 pass
@@ -145,6 +136,7 @@ def simulate_game(events, dt: float):
             draw_options_menu(events)    
         case gv.Gamemode.GM_UPGRADE_MENU:
             reset_player = True
+            reset_game()
             draw_upgrade_menu(events)
 
 def draw_main_menu(events):

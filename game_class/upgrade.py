@@ -53,4 +53,4 @@ UPGRADES: list[Upgrade] = [
     Upgrade("Ball Size", 10.0, Upgrade_Type.BALL_SIZE, 10.0, 3, WHITE),
     Upgrade("Ball Value", 15.0, Upgrade_Type.BALL_VALUE, 10.0, 5, WHITE),
     Upgrade("Round Time", 20.0, Upgrade_Type.TIME, 2, 5, RED)
-    ]
+]

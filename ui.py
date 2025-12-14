@@ -146,26 +146,24 @@ def create_upgrade_menu_widgets():
         200 + UPGRADE_SIZE + gv.upgrade_button_offset, 200, UPGRADE_SIZE, UPGRADE_SIZE,
         text="Play", fontSize=font_size, margin=20,
         inactiveColour=(200, 50, 0), hoverColour=(150, 0, 0), pressedColour=(0, 200, 20), radius=20,
-        onClick=lambda: gv.change_gamemode(gv.Gamemode.GM_GAMEPLAY)
+        onClick=lambda: (gv.change_gamemode(gv.Gamemode.GM_GAMEPLAY), gv.reset_upgrade_selected())
     ))
     
     # Quit Button
     upgrade_buttons.append(Button(
         renderer.game_screen,
         200, 200, UPGRADE_SIZE, UPGRADE_SIZE,
-        text="quit", fontSize=font_size, margin=20,
+        text="Quit Game", fontSize=font_size, margin=20,
         inactiveColour=(200, 50, 0), hoverColour=(150, 0, 0), pressedColour=(0, 200, 20), radius=20,
         onClick=quit_game
     ))
-    
-    # Buy Button
-
     
             
 def draw_main_menu_widgets(events):
     global main_menu_buttons, options_buttons, upgrade_buttons
     visibility_buttons(False, options_buttons)
     visibility_buttons(False, upgrade_buttons)
+    visibility_buttons(False, [gv.buy_button])
 
     if any(button is None for button in main_menu_buttons):
         return
@@ -178,6 +176,7 @@ def draw_options_menu_widgets(events):
     global main_menu_buttons, options_buttons, upgrade_buttons
     visibility_buttons(False, main_menu_buttons)
     visibility_buttons(False, upgrade_buttons)
+    visibility_buttons(False, [gv.buy_button])
 
     if any(button is None for button in options_buttons):
         return
@@ -194,6 +193,7 @@ def draw_game_widgets(events):
     visibility_buttons(False, main_menu_buttons)
     visibility_buttons(False, options_buttons)
     visibility_buttons(False, upgrade_buttons)
+    visibility_buttons(False, [gv.buy_button])
 
 def draw_upgrade_menu_widgets(events):
     global main_menu_buttons, options_buttons, upgrade_buttons
@@ -223,6 +223,8 @@ def draw_upgrade_menu_widgets(events):
 
 def visibility_buttons(visibility: bool, buttons: list[Button]):
     for btn in buttons:
+        if btn is None:
+            return
         if visibility:
             if not btn.isVisible(): btn.show()
             if not btn.isEnabled(): btn.enable()
