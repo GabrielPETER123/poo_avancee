@@ -33,7 +33,7 @@ class Green_Ball(Ball):
 
     def __init__(self, p_x, p_y, size, value):
         super().__init__(p_x, p_y, size, value)
-             
+
 class Red_Ball(Ball):
     color: int = RED
     damage: float = 10.0
@@ -41,6 +41,9 @@ class Red_Ball(Ball):
     def __init__(self, p_x, p_y, size, value):
         super().__init__(p_x, p_y, size, value)
        
+    def add_point(self):
+        gv.points += self.value + self.damage * 0.5
+        
     def damage_player(self, player: Player):
         if player.health > self.damage:
             player.health -= self.damage         
