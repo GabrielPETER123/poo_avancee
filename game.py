@@ -10,7 +10,7 @@ import math
 
 # ------------------------------------------------------------------
 # Map properties
-map = 0
+map: int = 0
 
 # Player Properties
 player_p_x, player_p_y = 0.0, 0.0

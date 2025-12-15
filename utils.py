@@ -16,6 +16,7 @@ def save_game():
 
     upgrade_data = [
         {
+            "name": u.name,
             "cost": u.cost,
             "value": u.value,
             "remaining_level": u.remaining_level,
