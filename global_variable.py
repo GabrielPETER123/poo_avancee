@@ -18,16 +18,17 @@ current_gamemode = Gamemode.GM_MENU
 
 # Game Properties
 round_time: float = 10.0
+end_round: bool = False
 
 # Screen Properties
 screen_width: float = .0
 screen_height: float = .0
+points: float = .0
 
 # Button Properties
 button_offset: float = screen_height * .05
 button_width: float = screen_width * .1
 button_height: float = screen_height * .07
-
 
 # Map Properties
 offset_map_width: float = .0
@@ -38,7 +39,7 @@ map_height: float = .0
 # Player Properties
 player_size: float = 50.0
 player_max_speed: float = 800.0
-points: float = .0
+player_health: float = 50.0
 
 # Ball Properties
 max_balls_on_screen: int = 5

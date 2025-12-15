@@ -29,7 +29,6 @@ ball_list: list[Ball] = []
 
 def manage_ball_list():
     global ball_list
-    # TODO: Mettre seulement des balles disponibles
     if (len(ball_list) < gv.max_balls_on_screen):
         for _ in range(gv.max_balls_on_screen - len(ball_list)):
             x = random.uniform(gv.offset_map_width, max(gv.offset_map_width, gv.map_width + gv.offset_map_width - gv.ball_size))
@@ -68,6 +67,8 @@ def simulate_balls(player: Player):
     for ball in ball_list:
         if (player.aabb_vs_aabb(ball.p_x, ball.p_y, ball.size)):
             ball.add_point()
+            if isinstance(ball, Red_Ball):
+                ball.damage_player(player)
             ball_list.remove(ball)
                    
 def reset_game():
@@ -75,7 +76,8 @@ def reset_game():
     player = None
     ball_list = []
     timer_temp = 0.0
-    timer = 0.0  
+    timer = 0.0
+    gv.end_round = False
     
 def simulate_game(events, dt: float):
     global player, timer, instance_player, player_p_x, player_p_y, reset_player
@@ -86,7 +88,7 @@ def simulate_game(events, dt: float):
     
     if player == None:
         player_p_x, player_p_y = (gv.map_width - gv.player_size) * .5 + gv.offset_map_width, (gv.map_height - gv.player_size) * .5 + gv.offset_map_height
-        player = Player(player_p_x, player_p_y, gv.player_size)
+        player = Player(player_p_x, player_p_y, gv.player_size, gv.player_health)
         instance_player = False
          
     match gv.current_gamemode:
@@ -126,7 +128,7 @@ def simulate_game(events, dt: float):
             simulate_balls(player)
             calculate_time()
             # TODO: Mettre le message de changement de screen pour aller sur les upgrades ou restart une game
-            if (timer > gv.round_time):
+            if (timer > gv.round_time) or (gv.end_round):
                 reset_game()
                 gv.change_gamemode(gv.Gamemode.GM_UPGRADE_MENU)
 
@@ -150,7 +152,7 @@ def draw_gameplay(events):
     p_x = 0.0
     p_y = 0.0
     text = ""
-    renderer.clear_screen(BLUE)
+    renderer.clear_screen(STRANGE_BLUE)
     ui.draw_game_widgets(events)
     renderer.draw_map(map)
     renderer.draw_player(player.p_x, player.p_y, player.size)
@@ -162,12 +164,16 @@ def draw_gameplay(events):
         text = "Time Left: " + str(math.ceil(gv.round_time - timer)) + "s"
     else:
         text = "No Time Left"
-    
     renderer.draw_text(text, WHITE, p_x, p_y)
     
     # Draw Player Score
     p_y = gv.screen_height * 0.2
     text = f"Points: {gv.points:.2f}"
+    renderer.draw_text(text, WHITE, p_x, p_y)
+    
+    # Draw Player Health
+    p_y = gv.screen_height * 0.3
+    text = f"Health: {player.health:.2f}"
     renderer.draw_text(text, WHITE, p_x, p_y)
     
 def draw_upgrade_menu(events):

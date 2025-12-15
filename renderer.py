@@ -116,6 +116,8 @@ def draw_upgrade_description(upgrade: Upgrade):
             description = "Increase Player Size by 10%"
         case Upgrade_Type.PLAYER_SPEED:
             description = "Increase Player Max Acceleration \nby 150"
+        case Upgrade_Type.PLAYER_HEALTH:
+            description = "Increase Player Health by 7.5"
         case Upgrade_Type.BALL_ON_SCREEN:
             description = "Increase the number of ball \nthat can spawn by 1"
         case Upgrade_Type.BALL_SIZE:

@@ -28,6 +28,7 @@ def save_game():
         "points": gv.points,
         "player_size": gv.player_size,
         "player_max_speed": gv.player_max_speed,
+        "player_health": gv.player_health,
         "ball_size": gv.ball_size,
         "ball_value": gv.ball_value,
         "max_ball_on_screen": gv.max_balls_on_screen,
@@ -55,6 +56,7 @@ def load_game() -> bool:
     gv.points = data.get("points", gv.points)
     gv.player_size = data.get("player_size", gv.player_size)
     gv.player_max_speed = data.get("player_max_speed", gv.player_max_speed)
+    gv.player_health = data.get("player_health", gv.player_health)
     gv.ball_size = data.get("ball_size", gv.ball_size)
     gv.ball_value = data.get("ball_value", gv.ball_value)
     gv.max_balls_on_screen = data.get("max_ball_on_screen", gv.max_balls_on_screen)

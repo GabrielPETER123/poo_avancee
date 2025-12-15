@@ -9,7 +9,8 @@ class Upgrade_Type(Enum):
     BALL_ON_SCREEN = 2
     PLAYER_SIZE = 3
     PLAYER_SPEED = 4
-    TIME = 5
+    PLAYER_HEALTH = 5
+    TIME = 6
 
 # ---------------UPGRADE CLASS---------------*
 # ? RED: TIME, BLUE: PLAYER, WHITE: BALL
@@ -44,6 +45,8 @@ class Upgrade:
                 gv.player_size *= 1 + (self.value / 100.0)
             case Upgrade_Type.PLAYER_SPEED:
                 gv.player_max_speed += self.value
+            case Upgrade_Type.PLAYER_HEALTH:
+                gv.player_health += self.value
             case Upgrade_Type.TIME:
                 gv.round_time += self.value
 
@@ -51,6 +54,7 @@ class Upgrade:
 UPGRADES: list[Upgrade] = [
     Upgrade("Player Size", 10.0, Upgrade_Type.PLAYER_SIZE, 10.0, 5, BLUE),
     Upgrade("Player Speed", 10.0, Upgrade_Type.PLAYER_SPEED, 150.0, 5, BLUE),
+    Upgrade("PLayer Health", 25.0, Upgrade_Type.PLAYER_HEALTH, 7.5, 10, BLUE),
     Upgrade("Maximum Balls", 5.0,  Upgrade_Type.BALL_ON_SCREEN, 1, 10, WHITE),
     Upgrade("Ball Size", 10.0, Upgrade_Type.BALL_SIZE, 10.0, 3, WHITE),
     Upgrade("Ball Value", 15.0, Upgrade_Type.BALL_VALUE, 10.0, 5, WHITE),

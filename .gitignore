@@ -8,9 +8,9 @@ venv/
 ENV/
 env/
 
-# Save Files
+# Files
 /save_files
-
+auto_eval.txt
 # Distribution / packaging
 build/
 dist/

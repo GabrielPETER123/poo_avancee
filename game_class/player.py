@@ -1,5 +1,4 @@
 # player.py
-import renderer
 import global_variable as gv
 
 class Player:    
@@ -14,10 +13,11 @@ class Player:
     ddp_x_min: float = -1300.0
     ddp_y_min: float = -1300.0
         
-    def __init__(self, p_x: float = 50.0, p_y: float = 50.0, size: float = 10.0):
+    def __init__(self, p_x: float = 50.0, p_y: float = 50.0, size: float = 10.0, health: float = 50.0):
         self.p_x = p_x
         self.p_y = p_y
         self.size = size
+        self.health = health
         
     def aabb_vs_aabb(self, other_x: float, other_y: float, other_size: float):
         return (self.p_x < other_x + other_size and
