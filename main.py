@@ -49,13 +49,12 @@ def main():
         #** Simulate
         game.simulate_game(events, delta_time)
         pw.update(events)
-        pg.display.update()
         pg.display.flip()
         
         frame_end_time = time.perf_counter()
         delta_time = frame_end_time - frame_begin_time
         frame_begin_time = frame_end_time
-        # Cap Framerate of needed
+        # Don't Lock Framerate it break calculation of player movement
         clock.tick()
     
     utils.save_game()
